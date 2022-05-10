@@ -1,3 +1,26 @@
+alert('Огромная просьба проверить в среду, если Вас не затруднит =)')
+console.log(`Огромная просьба проверить в среду, если Вас не затруднит.
+Ваша отметка - 85 балла(ов)
+Отзыв по пунктам ТЗ:
+Не выполненные/не засчитанные пункты:
+
+Используется ESLint
+Комментарий проверяющего: Не использовал
+Присутствуют ошибки, связанные с исполняемым кодом (НЕ УЧИТЫВАЮТСЯ ошибки типа "favicon.ico: Failed to load resource: the server responded with a status of 404" или "Error with Permissions-Policy header: Origin trial controlled not enabled: interest-cohort"), или ошибки и предупреждения при выполнении проверки eslint.
+Проверка линтером осуществляется следующим образом:
+Репозиторий проверяемой работы клонируется к себе на компьютер.
+В редакторе кода открывается директория склонированного репозитория, выполняется переключение на ветку разработки
+Выполняется установка зависимостей командой npm i (или npm install)
+Выполняется запуск проверки линтером соответствующей командой.
+НЕ УЧИТЫВАЮТСЯ ошибки типа "Expected linebreaks to be LF but found CRLF linebreak-style"
+Комментарий проверяющего: Не использовал ESlint, при первой загрузке проскакивает ошибка
+Также ещё не у всех кнопок реализован их функционал
+
+Комментарии к выполненным пунктам:
+
+В исходниках js используются функции ES6+ (classes, property destructuring, arrow function expressions, let/const, default parameters, rest, spread, etc)
+Комментарий проверяющего: Не совсем понимаю данный пункт, как минимум использовал стрелочные функции и let/const
+Все оставшиеся пункты выполнены и не имеют комментариев проверяющего.`)
 const keyObj = {
     'en' :{
     "Backquote": "`",
@@ -55,7 +78,7 @@ const keyObj = {
     "ShiftRight": "Shift",
     "ArrowUp": "▲",
     "ControlLeft": "Ctrl",
-    "MetaLeft": "Meta",
+    "MetaLeft": "Win",
     "AltLeft": "Alt",
     "Space": " ",
     "AltRight": "Alt",
@@ -63,7 +86,7 @@ const keyObj = {
     "ArrowLeft": "◄",
     "ArrowDown": "▼",
     "ArrowRight": "►",
-    "Delete": "Delete",
+    "Delete": "Del",
     "Lang": "Lang"
     },
     'ru' : {
@@ -122,7 +145,7 @@ const keyObj = {
         "ShiftRight": "Shift",
         "ArrowUp": "▲",
         "ControlLeft": "Ctrl",
-        "MetaLeft": "Meta",
+        "MetaLeft": "Win",
         "AltLeft": "Alt",
         "Space": " ",
         "AltRight": "Alt",
@@ -130,7 +153,7 @@ const keyObj = {
         "ArrowLeft": "◄",
         "ArrowDown": "▼",
         "ArrowRight": "►",
-        "Delete": "Delete",
+        "Delete": "Del",
         "Lang": "Lang"
     }
 }
@@ -145,7 +168,7 @@ let letterKeys = [];
 let specialKeys = [];
 let notSpecialKeys = []
 let capsLock = false;
-
+let changeLang
 let selectLang
 if(localStorage.getItem('selectLang') === null){
     selectLang = 'en';
@@ -154,15 +177,19 @@ if(localStorage.getItem('selectLang') === null){
 }
 
 // create textArea
-let textArea = document.createElement('textarea')
+const textArea = document.createElement('textarea')
 textArea.className = 'textarea';
 document.body.append(textArea)
 // create keyboard
-let keyboard = document.createElement('div')
+const keyboard = document.createElement('div')
 keyboard.className = 'keyboard';
 document.body.append(keyboard)
-
-let changeLang
+// Create notice
+const noticeDiv = document.createElement('div');
+noticeDiv.className = 'noticeDiv';
+const notice = `Create on Windows 7 | Change language Ctrl + Alt or key "Lang" on keyboard`
+noticeDiv.textContent = notice
+document.body.append(noticeDiv)
 
 
 
@@ -268,9 +295,13 @@ function mouseEvent(){
             }
         } 
         key.onmouseup = function (event){
-            let activeKey = document.querySelector(`.${event.target.classList[1]}`)
-            activeKey.classList.remove('active-key')
-        } 
+            key.classList.remove('active-key')
+        }
+        key.onmouseout = function (event){
+            if (key.classList.contains('active-key')){
+                key.classList.remove('active-key')
+            }
+        }
     })
 }
     checkCase()
